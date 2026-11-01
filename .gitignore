@@ -1,0 +1,83 @@
+# ---------------------------------------------------------------------------
+# Secrets and credentials. NEVER commit these files.
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.pk
+near-credentials/
+.near-credentials/
+~/.near-credentials
+*.keystore.json
+
+# ---------------------------------------------------------------------------
+# Node / pnpm
+# ---------------------------------------------------------------------------
+node_modules/
+.pnpm-store/
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+.npm/
+.pnpm-debug.log
+
+# ---------------------------------------------------------------------------
+# Rust / NEAR contract build artifacts
+# ---------------------------------------------------------------------------
+target/
+**/target/
+*.wasm
+!packages/contract/.assets/*.wasm
+out/
+res/
+out.wasm
+contract.wasm
+build/
+
+# ---------------------------------------------------------------------------
+# Next.js
+# ---------------------------------------------------------------------------
+.next/
+out/
+next-env.d.ts
+.vercel/
+*.tsbuildinfo
+.turbo/
+
+# ---------------------------------------------------------------------------
+# Test coverage and caches
+# ---------------------------------------------------------------------------
+coverage/
+.nyc_output/
+.vitest-cache/
+.playwright/
+test-results/
+blob-report/
+playwright-report/
+
+# ---------------------------------------------------------------------------
+# Snapshots that are produced locally but not yet published.
+# Published snapshots (with a manifest entry) MUST be committed.
+# ---------------------------------------------------------------------------
+snapshots/local/
+snapshots/*.local.json
+
+# ---------------------------------------------------------------------------
+# Editors and OS
+# ---------------------------------------------------------------------------
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# ---------------------------------------------------------------------------
+# Popper specific: engine output that has not been attested yet
+# ---------------------------------------------------------------------------
+results/local/
+*.log

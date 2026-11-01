@@ -1,0 +1,34 @@
+{
+  "name": "popper-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Popper: the first on-chain pre-registered, falsifiable investment thesis for NEAR Protocol",
+  "license": "MIT",
+  "packageManager": "pnpm@10.27.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "pnpm -r --if-present run build",
+    "test": "pnpm -r --if-present run test",
+    "test:engine": "pnpm --filter @popper/engine run test",
+    "test:web": "pnpm --filter @popper/web run test",
+    "test:contract": "cd packages/contract && cargo test",
+    "lint": "pnpm -r --if-present run lint",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "snapshot": "pnpm --filter @popper/cli run snapshot",
+    "verify": "pnpm --filter @popper/cli run verify",
+    "commit-thesis": "pnpm --filter @popper/cli run commit-thesis",
+    "attest": "pnpm --filter @popper/cli run attest",
+    "prove": "pnpm --filter @popper/cli run prove",
+    "build:contract": "cd packages/contract && cargo build --target wasm32-unknown-unknown --release",
+    "deploy:contract": "bash scripts/deploy-contract.sh",
+    "dev": "pnpm --filter @popper/web run dev",
+    "clean": "pnpm -r --if-present run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

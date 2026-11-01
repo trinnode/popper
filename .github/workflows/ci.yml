@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  engine:
+    name: Engine and CLI (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile=false
+      - run: pnpm test:engine
+      - run: pnpm --filter @popper/cli run verify -- --offline --quiet || pnpm --filter @popper/cli run verify -- --offline
+      - name: Verify claims.json integrity (hash must match last pinned manifest)
+        run: pnpm --filter @popper/cli run check-claims
+
+  contract:
+    name: NEAR contract (Rust stable)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: packages/contract
+      - name: Cargo test
+        run: cargo test --manifest-path packages/contract/Cargo.toml
+      - name: Cargo fmt check
+        run: cargo fmt --manifest-path packages/contract/Cargo.toml -- --check
+      - name: Clippy
+        run: cargo clippy --manifest-path packages/contract/Cargo.toml --all-targets -- -D warnings
+      - name: Build wasm (release)
+        run: cargo build --manifest-path packages/contract/Cargo.toml --target wasm32-unknown-unknown --release
+
+  web:
+    name: Web app build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile=false
+      - run: pnpm --filter @popper/web run build
+      - name: Lint web
+        run: pnpm --filter @popper/web run lint --if-present

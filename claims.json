@@ -1,0 +1,176 @@
+{
+  "$schema": "./packages/engine/src/schema/claims.schema.json",
+  "thesis": "NEAR Intents is the dominant cross-chain liquidity routing layer, and the NEAR protocol captures durable, measurable value from it through Q4 2026",
+  "author": "trinnode",
+  "version": "1.0.0",
+  "commit_deadline": "2026-11-02T00:00:00Z",
+  "measurement_note": "All baselines were pulled from public APIs on 2026-11-01 and are recorded in snapshots/baseline/ with SHA-256 hashes. Thresholds were frozen before the measurement windows opened. Kill conditions are numeric so the engine can evaluate them without interpretation.",
+  "claims": [
+    {
+      "id": "cross_chain_dominance",
+      "title": "NEAR Intents carries at least 55% of DefiLlama-tracked cross-chain bridge volume",
+      "metric": "intents_share_of_tracked_bridge_volume_7d",
+      "metric_definition": "NEAR Intents total7d volume divided by the sum of total7d volume across every protocol in the DefiLlama dexs overview with category Bridge, expressed as a percentage, measured on a trailing 7 day window",
+      "source": "defillama:overview/dexs?category=Bridge",
+      "source_url": "https://api.llama.fi/overview/dexs?category=Bridge&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",
+      "baseline": {
+        "date": "2026-11-01",
+        "value": 64.45,
+        "detail": "NEAR Intents $884,323,997 of $1,372,204,727 tracked 7d bridge volume across 6 protocols"
+      },
+      "threshold": {
+        "min_pct": 55
+      },
+      "kill_condition": "share below 45% on the measurement date = FALSIFIED",
+      "at_risk_zone": "share below 50% but at or above 45% = AT_RISK",
+      "measurement_window": {
+        "start": "2026-11-10",
+        "end": "2026-11-16",
+        "measure_at": "2026-11-17T00:00:00Z"
+      },
+      "status": "PENDING",
+      "note": "Closes during the judging window. The scoreboard re-verifies this claim live while judges watch."
+    },
+    {
+      "id": "tvl_resilience",
+      "title": "NEAR Intents TVL stays above $180M through Nov 14",
+      "metric": "tvl_usd",
+      "metric_definition": "totalLiquidityUSD from the DefiLlama protocol endpoint for near-intents, sampled once per night at the snapshot run",
+      "source": "defillama:protocol/near-intents",
+      "source_url": "https://api.llama.fi/protocol/near-intents",
+      "baseline": {
+        "date": "2026-11-01",
+        "value": 201566310,
+        "detail": "TVL $201.57M at baseline pull"
+      },
+      "threshold": {
+        "min": 180000000
+      },
+      "kill_condition": "TVL below $120M for 3 consecutive nightly snapshots = FALSIFIED",
+      "at_risk_zone": "TVL below $150M but at or above $120M = AT_RISK",
+      "measurement_window": {
+        "start": "2026-11-01",
+        "end": "2026-11-14"
+      },
+      "status": "PENDING"
+    },
+    {
+      "id": "volume_run_rate",
+      "title": "Trailing 30 day Intents volume stays above $3.0B",
+      "metric": "trailing_30d_volume_usd",
+      "metric_definition": "Sum of the last 30 daily points from the DefiLlama dexs summary endpoint for near-intents",
+      "source": "defillama:summary/dexs/near-intents",
+      "source_url": "https://api.llama.fi/summary/dexs/near-intents",
+      "baseline": {
+        "date": "2026-11-01",
+        "value": 3860604916,
+        "detail": "Trailing 30d volume $3.86B; trailing 1y $32.87B"
+      },
+      "threshold": {
+        "min": 3000000000
+      },
+      "kill_condition": "trailing 30d volume below $1.8B on the measurement date = FALSIFIED",
+      "at_risk_zone": "below $2.4B but at or above $1.8B = AT_RISK",
+      "measurement_window": {
+        "start": "2026-11-10",
+        "end": "2026-11-16",
+        "measure_at": "2026-11-17T00:00:00Z"
+      },
+      "status": "PENDING"
+    },
+    {
+      "id": "fee_run_rate",
+      "title": "Trailing 7 day protocol fees stay above $400K",
+      "metric": "trailing_7d_fees_usd",
+      "metric_definition": "total7d from the DefiLlama fees overview for the near-intents adapter",
+      "source": "defillama:overview/fees (module near-intents)",
+      "source_url": "https://api.llama.fi/overview/fees?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",
+      "baseline": {
+        "date": "2026-11-01",
+        "value": 1218693,
+        "detail": "Trailing 7d fees $1.22M; all time $57.98M"
+      },
+      "threshold": {
+        "min": 400000
+      },
+      "kill_condition": "trailing 7d fees below $150K on the measurement date = FALSIFIED",
+      "at_risk_zone": "below $275K but at or above $150K = AT_RISK",
+      "measurement_window": {
+        "start": "2026-11-10",
+        "end": "2026-11-16",
+        "measure_at": "2026-11-17T00:00:00Z"
+      },
+      "status": "PENDING",
+      "note": "NEAR announced in 2026 that protocol revenue from intent executions funds NEAR buybacks, which makes fee capture a first class metric for the thesis."
+    },
+    {
+      "id": "bear_case_mcap_ratio",
+      "title": "BEAR CASE: NEAR market cap does NOT exceed 5% of ETH market cap",
+      "metric": "near_mcap_over_eth_mcap_ratio",
+      "metric_definition": "NEAR usd_market_cap divided by ETH usd_market_cap from CoinGecko simple price endpoint, sampled nightly",
+      "source": "coingecko:simple/price",
+      "source_url": "https://api.coingecko.com/api/v3/simple/price?ids=near,ethereum&vs_currencies=usd&include_market_cap=true",
+      "baseline": {
+        "date": "2026-11-01",
+        "value": 0.0202,
+        "detail": "NEAR $5.58B / ETH $275.93B = 2.02%"
+      },
+      "threshold": {
+        "max_ratio": 0.05
+      },
+      "kill_condition": "ratio at or above 0.05 on any nightly snapshot = FALSIFIED. This is a deliberate bear guard: if NEAR outruns ETH by 2.5x in two weeks the thesis framing loses, and the scoreboard says so",
+      "at_risk_zone": "ratio at or above 0.035 = AT_RISK",
+      "measurement_window": {
+        "start": "2026-11-01",
+        "end": "2026-11-17"
+      },
+      "status": "PENDING"
+    },
+    {
+      "id": "price_floor",
+      "title": "NEAR price does not close below $3.00 during the window",
+      "metric": "near_price_usd_nightly",
+      "metric_definition": "NEAR spot price in USD from CoinGecko, sampled once per nightly snapshot",
+      "source": "coingecko:simple/price",
+      "source_url": "https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd",
+      "baseline": {
+        "date": "2026-11-01",
+        "value": 4.26,
+        "detail": "NEAR at $4.26 at baseline pull"
+      },
+      "threshold": {
+        "min": 3.0
+      },
+      "kill_condition": "price below $2.00 on any nightly snapshot = FALSIFIED",
+      "at_risk_zone": "price below $2.60 but at or above $2.00 = AT_RISK",
+      "measurement_window": {
+        "start": "2026-11-01",
+        "end": "2026-11-14"
+      },
+      "status": "PENDING"
+    },
+    {
+      "id": "snapshot_liveness",
+      "title": "META: 12 of 12 scheduled nightly snapshots land with valid hashes",
+      "metric": "scheduled_snapshot_completion_rate",
+      "metric_definition": "Number of nightly snapshots committed between Nov 2 and Nov 13 inclusive (12 scheduled) that appear in snapshots/manifest.json with a matching SHA-256 and git commit, divided by 12",
+      "source": "repo:snapshots/manifest.json",
+      "source_url": "https://github.com/trinnode/popper-near/tree/main/snapshots",
+      "baseline": {
+        "date": "2026-11-02",
+        "value": 0,
+        "detail": "0 of 12 snapshots completed at window open"
+      },
+      "threshold": {
+        "min_pct": 100
+      },
+      "kill_condition": "any scheduled snapshot missing or hash-invalid at window close = FALSIFIED. The thesis verification process itself is on the scoreboard",
+      "at_risk_zone": "9 to 11 of 12 = AT_RISK",
+      "measurement_window": {
+        "start": "2026-11-02",
+        "end": "2026-11-14"
+      },
+      "status": "PENDING"
+    }
+  ]
+}
