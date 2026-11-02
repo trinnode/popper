@@ -1,0 +1,31 @@
+[package]
+name = "popper-contract"
+version = "0.1.0"
+edition = "2021"
+description = "Popper: on-chain pre-registered falsifiable investment thesis on NEAR"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# 5.30.0 requires rustc 1.95; the verified toolchain here is 1.94, and 5.29.1
+# is the newest release that supports it (rust-version = 1.93).
+near-sdk = { version = "=5.29.1", features = ["legacy"] }
+
+[dev-dependencies]
+# Same crate with the unit-testing feature enabled only for tests, so the
+# production wasm build does not compile the test utilities.
+near-sdk = { version = "=5.29.1", features = ["unit-testing", "legacy"] }
+
+[profile.release]
+# Wasm size optimization. Build with:
+#   cargo build --target wasm32-unknown-unknown --release
+opt-level = "z"       # optimize for size
+lto = true            # link-time optimization
+codegen-units = 1     # single codegen unit for better optimization
+panic = "abort"       # smaller panic handling code
+strip = true          # strip debug symbols
+debug = false
+overflow-checks = true # keep arithmetic overflow checks in release (safety)
+rpath = false

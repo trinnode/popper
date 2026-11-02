@@ -1,0 +1,17 @@
+{
+  "name": "@popper/cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "verify": "tsx src/index.ts verify",
+    "commit-thesis": "tsx src/index.ts commit-thesis",
+    "check-claims": "tsx src/index.ts check-claims",
+    "snapshot": "tsx src/index.ts snapshot",
+    "attest": "tsx src/index.ts attest",
+    "prove": "tsx src/index.ts prove"
+  },
+  "devDependencies": { "@types/node": "^22.10.2", "tsx": "^4.19.2", "typescript": "^5.7.2" }
+}
